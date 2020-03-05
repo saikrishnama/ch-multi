@@ -1,0 +1,6 @@
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/main/java/org/sonatype/mavenbook/weather/WeatherFormatter.java
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/main/java/org/sonatype/mavenbook/weather/WeatherService.java
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/main/java/org/sonatype/mavenbook/weather/YahooParser.java
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/main/java/org/sonatype/mavenbook/weather/Main.java
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/main/java/org/sonatype/mavenbook/weather/Weather.java
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/main/java/org/sonatype/mavenbook/weather/YahooRetriever.java

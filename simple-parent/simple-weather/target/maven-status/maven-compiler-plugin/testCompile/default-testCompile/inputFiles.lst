@@ -1,0 +1,2 @@
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/test/java/org/sonatype/mavenbook/weather/yahoo/WeatherFormatterTest.java
+/root/sample-java-app-ci/ch-multi/simple-parent/simple-weather/src/test/java/org/sonatype/mavenbook/weather/yahoo/YahooParserTest.java
