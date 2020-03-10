@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="2" passed="2">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Command line suite" duration-ms="1872" started-at="2020-03-05T01:42:24Z" finished-at="2020-03-05T01:42:26Z">
+    <groups>
+    </groups>
+    <test name="Command line test" duration-ms="1872" started-at="2020-03-05T01:42:24Z" finished-at="2020-03-05T01:42:26Z">
+      <class name="org.sonatype.mavenbook.weather.yahoo.YahooParserTest">
+        <test-method status="PASS" signature="testParser()[pri:0, instance:testParser(org.sonatype.mavenbook.weather.yahoo.YahooParserTest)]" name="testParser" duration-ms="6" started-at="2020-03-05T01:42:26Z" finished-at="2020-03-05T01:42:26Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testParser -->
+      </class> <!-- org.sonatype.mavenbook.weather.yahoo.YahooParserTest -->
+      <class name="org.sonatype.mavenbook.weather.yahoo.WeatherFormatterTest">
+        <test-method status="PASS" signature="testFormat()[pri:0, instance:testFormat(org.sonatype.mavenbook.weather.yahoo.WeatherFormatterTest)]" name="testFormat" duration-ms="1677" started-at="2020-03-05T01:42:24Z" finished-at="2020-03-05T01:42:26Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testFormat -->
+      </class> <!-- org.sonatype.mavenbook.weather.yahoo.WeatherFormatterTest -->
+    </test> <!-- Command line test -->
+  </suite> <!-- Command line suite -->
+</testng-results>
