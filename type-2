@@ -1,0 +1,110 @@
+To delete rows from a Snowflake table if the data is for a period of more than 180 days and has not been accessed, you can use the following approach:
+
+Use Snowflake's TIME_TRAVEL function to check when each row was last accessed. The TIME_TRAVEL function allows you to query the state of the database at a specific point in time.
+
+Filter the rows based on the last access time and the 180-day threshold.
+
+Delete the filtered rows using a SQL delete statement.
+
+Here is an example Python code that implements the above approach:
+###
+
+import snowflake.connector
+from datetime import datetime, timedelta
+
+# Set up Snowflake connection
+conn = snowflake.connector.connect(
+    user='<your_username>',
+    password='<your_password>',
+    account='<your_account>',
+    warehouse='<your_warehouse>',
+    database='<your_database>',
+    schema='<your_schema>'
+)
+
+# Calculate the time threshold (180 days ago)
+threshold = datetime.utcnow() - timedelta(days=180)
+
+# Execute a select statement to get the rows to delete
+cursor = conn.cursor()
+cursor.execute(f"SELECT * FROM <your_table> WHERE LAST_ACCESS_TIME <= '{threshold.isoformat()}'")
+
+# Get the rows to delete
+rows_to_delete = cursor.fetchall()
+
+# Delete the rows using a SQL delete statement
+delete_query = f"DELETE FROM <your_table> WHERE ROW_ID IN ({','.join([str(row[0]) for row in rows_to_delete])})"
+cursor.execute(delete_query)
+
+# Commit the transaction
+conn.commit()
+
+# Close the connection
+conn.close()
+
+
+Here's an example Python function that performs the following tasks:
+
+Checks if the current user has the required privileges to delete row-level data from a table.
+If the current user doesn't have the required privileges, switches to the admin role and grants the necessary privileges to the system account.
+Deletes the row-level data from the table.
+Revokes the privileges from the system account.
+
+import snowflake.connector
+from snowflake.connector.errors import ProgrammingError
+
+def delete_row_level_data(table_name):
+    """
+    Deletes row-level data from a Snowflake table.
+
+    Args:
+        table_name (str): The name of the table.
+
+    Returns:
+        None
+    """
+    # Set up Snowflake connection
+    conn = snowflake.connector.connect(
+        user='<your_username>',
+        password='<your_password>',
+        account='<your_account>',
+        warehouse='<your_warehouse>',
+        database='<your_database>',
+        schema='<your_schema>'
+    )
+
+    # Check if the current user has the required privileges
+    cursor = conn.cursor()
+    try:
+        cursor.execute(f"DELETE FROM {table_name} WHERE 1=0")
+    except ProgrammingError as e:
+        if 'The user does not have DELETE privilege' in str(e):
+            # Switch to the admin role
+            cursor.execute('USE ROLE ACCOUNTADMIN')
+
+            # Grant the necessary privileges to the system account
+            cursor.execute(f"GRANT DELETE ON {table_name} TO ROLE SYSADMIN")
+            cursor.execute(f"GRANT USAGE ON DATABASE {conn.database} TO ROLE SYSADMIN")
+
+            # Reconnect as the system account
+            conn.reconnect(user='SYSADMIN')
+
+            # Delete the row-level data
+            cursor.execute(f"DELETE FROM {table_name}")
+
+            # Revoke the privileges from the system account
+            cursor.execute(f"REVOKE DELETE ON {table_name} FROM ROLE SYSADMIN")
+            cursor.execute(f"REVOKE USAGE ON DATABASE {conn.database} FROM ROLE SYSADMIN")
+        else:
+            # Reraise the exception if it's not related to missing privileges
+            raise e
+    else:
+        # Delete the row-level data
+        cursor.execute(f"DELETE FROM {table_name}")
+
+    # Commit the transaction
+    conn.commit()
+
+    # Close the connection
+    conn.close()
+
